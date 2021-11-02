@@ -35,6 +35,6 @@ public class Department {
 
     @Override
     public String toString() {
-        return "Mã bộ phận: " + departmentId + ", tên bộ phận: " + departmentName + ", số lượng nhân viên hiện tại: " + employeeNumber;
+        return String.format("%-15s%-15s%d", departmentId, departmentName, employeeNumber);
     }
 }

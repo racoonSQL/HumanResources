@@ -5,10 +5,12 @@ public class HumanResources {
     private static List<Department> departments;
     static Scanner inpN = new Scanner(System.in);
     static Scanner inpS = new Scanner(System.in);
+    // select feature or quit
     static int type;
 
     public static void main(String[] args) {
         init();
+        // back to menu if user choose "y"
         String back = "y";
         do {
             menu();
@@ -18,27 +20,33 @@ public class HumanResources {
                 type = inpN.nextInt();
             }
             switch (type) {
-                case 1 -> {
+                case 1:
                     displayStaff();
                     backMenu();
-                }
-                case 2 -> {
+                    break;
+                case 2:
                     displayDepartment();
                     backMenu();
-                }
-                case 3 -> back = displayDepartmentStaff();
-                case 4 -> back = addStaff();
-                case 5 -> back = findStaff();
-                case 6 -> {
+                    break;
+                case 3:
+                    back = displayDepartmentStaff();
+                    break;
+                case 4:
+                    back = addStaff();
+                    break;
+                case 5:
+                    back = findStaff();
+                    break;
+                case 6:
                     displaySalaryDescending();
                     backMenu();
-                }
-                case 7 -> {
+                    break;
+                case 7:
                     displaySalaryAscending();
                     backMenu();
-                }
-                default -> {
-                }
+                    break;
+                default:
+                    break;
             }
             if (!back.equalsIgnoreCase("y")) {
                 type = 8;
@@ -47,6 +55,9 @@ public class HumanResources {
         while (type != 8);
     }
 
+    /**
+     * display menu
+     */
     private static void menu() {
         System.out.println("  ****************************");
         System.out.println("1. Hiển thị danh sách nhân viên");
@@ -60,6 +71,10 @@ public class HumanResources {
         System.out.print(">> Nhập số tương ứng với chức năng: ");
     }
 
+    /**
+     * initial a few staff members
+     * add them to 2 lists
+     */
     private static void init() {
         staffs = new ArrayList<>();
         departments = new ArrayList<>();
@@ -74,18 +89,22 @@ public class HumanResources {
         Staff hvQuang = new Employee("003", "Ho Vang Quang", 28, 2, "17/07", "it", 30, 20);
         Staff nvNam = new Employee("004", "Nguyen Van Nam", 22, 3, "20/09", "it", 30, 12);
         Staff ntThuy = new Employee("005", "Nguyen Thi Thuy", 20, 2, "08/05", "bs", 30, 26);
-        Staff nnCuong = new Employee("004", "Ngo Ngoc Cuong", 29, 3, "21/06", "hr", 30, 8);
-        Staff vvTuan = new Employee("004", "Vu Van Tuan", 27, 3, "07/12", "hr", 30, 22);
+        Staff nnCuong = new Employee("006", "Ngo Ngoc Cuong", 29, 3, "21/06", "hr", 30, 8);
+        Staff vvTuan = new Employee("007", "Vu Van Tuan", 27, 3, "07/12", "hr", 30, 22);
         Staff nnHieu = new Manager("b01", "Nguyen Ngoc Hieu", 30, 5, "12/02", "bs", 30, "Business Leader");
         Staff ndManh = new Manager("b02", "Nong Duc Manh", 31, 5, "15/09", "bs", 30, "Project Leader");
         Staff mvDai = new Manager("t01", "Mai Van Dai", 34, 5, "02/11", "it", 30, "Technical Leader");
         Staff tqTrung = new Manager("p01", "Tran Quang Trung", 33, 5, "06/10", "hr", 30, "Project Leader");
         staffs.addAll(Arrays.asList(tvThang, tvThanh, hvQuang, nvNam, ntThuy, nnCuong, vvTuan, nnHieu, ndManh, mvDai, tqTrung));
+        // calculate salary of existing employees
         for (Staff staffSalary : staffs) {
             calSalary(staffSalary);
         }
     }
 
+    /**
+     * back to menu or quit
+     */
     private static void backMenu() {
         System.out.print("Ấn \"y\" để quay lại menu, ấn phím khác để đóng chương trình: ");
         String replay = inpS.nextLine();
@@ -94,15 +113,24 @@ public class HumanResources {
         }
     }
 
+    /**
+     * feature 1: display all staff members
+     */
     private static void displayStaff() {
-        System.out.println();
-        for (Staff staff : staffs) {
+        System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ");
+        for (Staff employee : staffs) {
             // get department name
-            String departmentName = getDepartmentName(staff.getDepart());
-            staff.displayInformation(departmentName, false);
+            String departmentName = getDepartmentName(employee.getDepart());
+            employee.displayInformation(departmentName, false);
         }
     }
 
+    /**
+     * get department name to show
+     *
+     * @param departmentId department id
+     * @return department name
+     */
     private static String getDepartmentName(String departmentId) {
         for (Department depart : departments) {
             if (depart.getDepartmentId().equals(departmentId)) {
@@ -112,27 +140,38 @@ public class HumanResources {
         return "";
     }
 
+    /**
+     * feature 2: display department info
+     */
     private static void displayDepartment() {
+        System.out.printf("%-15s%-15s%s%n", "Mã bộ phận", "Tên bộ phận", "Số lượng nhân viên");
         for (Department depart : departments) {
             System.out.println(depart.toString());
         }
     }
 
+    /**
+     * feature 3: display employees by department
+     *
+     * @return user choice
+     */
     private static String displayDepartmentStaff() {
-        int select;
+        // to choose again, back to menu, or quit
         String selectNew;
         do {
             System.out.println("1. Bộ phận HR");
             System.out.println("2. Bộ phận IT");
             System.out.println("3. Bộ phận Business");
             System.out.print(">> Nhập số tương ứng với bộ phận: ");
-            select = inpN.nextInt();
+            // select department
+            int select = inpN.nextInt();
             while (select < 1 || select > 3) {
                 System.out.print("Vui lòng nhập lại: ");
                 select = inpN.nextInt();
             }
             switch (select) {
                 case 1:
+                    System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ");
                     for (Staff staff : staffs) {
                         if (staff.getDepart().equalsIgnoreCase("hr")) {
                             // get department name
@@ -142,6 +181,7 @@ public class HumanResources {
                     }
                     break;
                 case 2:
+                    System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ");
                     for (Staff staff : staffs) {
                         if (staff.getDepart().equalsIgnoreCase("it")) {
                             // get department name
@@ -151,6 +191,7 @@ public class HumanResources {
                     }
                     break;
                 case 3:
+                    System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ");
                     for (Staff staff : staffs) {
                         if (staff.getDepart().equalsIgnoreCase("bs")) {
                             // get department name
@@ -168,7 +209,13 @@ public class HumanResources {
         return selectNew;
     }
 
+    /**
+     * feature 4: add staff members
+     *
+     * @return user choice
+     */
     private static String addStaff() {
+        // to choose again, back to menu, or quit
         String selectNew;
         do {
             System.out.println("1. Thêm nhân viên");
@@ -197,7 +244,7 @@ public class HumanResources {
             System.out.println("1. HR\n2. IT\n3. Business");
             System.out.print(">> Nhập số tương ứng: ");
             int inputDepartNum = inpN.nextInt();
-            while (inputDepartNum != 1 && inputDepartNum != 2 && inputDepartNum != 3) {
+            while (inputDepartNum < 1 || inputDepartNum > 3) {
                 System.out.print("Vui lòng nhập lại: ");
                 inputDepartNum = inpN.nextInt();
             }
@@ -216,25 +263,35 @@ public class HumanResources {
                 System.out.print("Số giờ làm thêm: ");
                 int inputOverTime = inpN.nextInt();
                 Staff newEmployee = new Employee(inputId, inputName, inputAge, inputCoeSalary, inputDateIn, inputDepart, inputPaidLeave, inputOverTime);
+                // add member to list
                 staffs.add(newEmployee);
+                // calculate salary for employee
                 calSalary(newEmployee);
             } else {
                 System.out.println("Chức vụ:");
                 System.out.println("1. Business Leader\n2. Project Leader\n3. Technical Leader");
                 int inputPositionNum = inpN.nextInt();
-                while (inputPositionNum != 1 && inputPositionNum != 2 && inputPositionNum != 3) {
+                while (inputPositionNum < 1 || inputPositionNum > 3) {
                     inputPositionNum = inpN.nextInt();
                 }
                 String inputPosition = "";
                 switch (inputPositionNum) {
-                    case 1 -> inputPosition = "Business Leader";
-                    case 2 -> inputPosition = "Project Leader";
-                    case 3 -> inputPosition = "Technical Leader";
-                    default -> {
-                    }
+                    case 1:
+                        inputPosition = "Business Leader";
+                        break;
+                    case 2:
+                        inputPosition = "Project Leader";
+                        break;
+                    case 3:
+                        inputPosition = "Technical Leader";
+                        break;
+                    default:
+                        break;
                 }
                 Staff newManager = new Manager(inputId, inputName, inputAge, inputCoeSalary, inputDateIn, inputDepart, inputPaidLeave, inputPosition);
+                // add member to list
                 staffs.add(newManager);
+                // calculate salary for manager
                 calSalary(newManager);
             }
             System.out.print("Ấn \"b\" để chọn lại, ấn \"y\" để quay lại menu, ấn phím khác để đóng chương trình: ");
@@ -243,35 +300,64 @@ public class HumanResources {
         return selectNew;
     }
 
-    private static boolean isInvalidId(String check) {
+    /**
+     * check if ID already exists
+     *
+     * @param inputId ID from input
+     * @return true or false
+     */
+    private static boolean isInvalidId(String inputId) {
         for (Staff staff : staffs) {
-            if (staff.getId().equalsIgnoreCase(check)) {
+            // compare ID in Staff object with ID from input
+            if (staff.getId().equalsIgnoreCase(inputId)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * update number of staff members
+     *
+     * @param deptId department ID from input
+     */
     private static void updateNumberOfStaff(String deptId) {
         for (Department dept : departments) {
+            // if match ID in list, increase number
             if (dept.getDepartmentId().equals(deptId)) {
                 dept.setEmployeeNumber(dept.getEmployeeNumber() + 1);
             }
         }
     }
 
+    /**
+     * calculate salary
+     *
+     * @param newStaff new member
+     */
     private static void calSalary(Staff newStaff) {
+        // casting Staff data type to ICalculator data type
         ICalculator calStaff = (ICalculator) newStaff;
+        // calculate salary
         long salary = calStaff.calculateSalary();
+        // set salary for new staff
         newStaff.setSalary(salary);
     }
 
+    /**
+     * feature 5: find staff members
+     *
+     * @return user choice
+     */
     private static String findStaff() {
+        // to choose again, back to menu, or quit
         String selectNew;
         do {
             System.out.print("Nhập vào ID hoặc tên để tìm kiếm: ");
             String inputIdOrName = inpS.nextLine();
+            // display message if not found
             boolean isFound = false;
+            System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ", "Lương");
             for (Staff staff : staffs) {
                 if (staff.getId().toLowerCase().contains(inputIdOrName.toLowerCase()) || staff.getName().toLowerCase().contains(inputIdOrName.toLowerCase())) {
                     // get department name
@@ -289,22 +375,35 @@ public class HumanResources {
         return selectNew;
     }
 
+    /**
+     * feature 6: display salary descending
+     */
     private static void displaySalaryDescending() {
+        // sort list
         staffs.sort(Comparator.comparingLong(Staff::getSalary));
+        // reverse direction
         Collections.reverse(staffs);
+        System.out.printf("%-8s%-8s%-20s%s%n", "Stt", "ID", "Tên", "Lương");
+        // order number
         int index = 1;
         for (Staff staff : staffs) {
-            System.out.print(index + ") ");
+            System.out.printf("%-8d", index);
             staff.displaySalary();
             index++;
         }
     }
 
+    /**
+     * feature 7: display salary ascending
+     */
     private static void displaySalaryAscending() {
+        // sort list
         staffs.sort(Comparator.comparingLong(Staff::getSalary));
+        System.out.printf("%-8s%-8s%-20s%s%n", "Stt", "ID", "Tên", "Lương");
+        // order number
         int index = 1;
         for (Staff staff : staffs) {
-            System.out.print(index + ") ");
+            System.out.printf("%-8d", index);
             staff.displaySalary();
             index++;
         }

@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 public class Employee extends Staff implements ICalculator {
     private int overTime;
 
@@ -16,9 +18,12 @@ public class Employee extends Staff implements ICalculator {
 
     @Override
     public void displayInformation(String departName, boolean isDisplaySalary) {
-        System.out.print(this.getId() + ", " + this.getName() + ", " + this.getAge() + ", " + this.getCoeSalary() + ", " + this.getDateIn() + ", " + departName + ", " + this.getPaidLeave() + ", " + this.getOverTime());
+        System.out.printf("%-8s%-20s%-8d%-14d%-15s%-12s%-20d%-18d%-20s", this.getId(), this.getName(), this.getAge(), this.getCoeSalary(), this.getDateIn(), departName, this.getPaidLeave(), this.getOverTime(), "NA");
         if (isDisplaySalary) {
-            System.out.println(", " + this.getSalary());
+            // format before display
+            DecimalFormat format = new DecimalFormat("#,###");
+            String formattedSalary = format.format(this.getSalary());
+            System.out.printf("%s%n", formattedSalary);
         } else {
             System.out.println();
         }

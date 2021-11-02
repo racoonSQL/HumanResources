@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 public abstract class Staff {
     private String id;
     private String name;
@@ -85,6 +87,9 @@ public abstract class Staff {
     public abstract void displayInformation(String departName, boolean isisDisplaySalary);
 
     public void displaySalary() {
-        System.out.println("ID: " + id +", tên: " + name + ", lương: " + salary);
+        // format before display
+        DecimalFormat format = new DecimalFormat("#,###");
+        String formattedSalary = format.format(salary);
+        System.out.printf("%-8s%-20s%s%n", id, name, formattedSalary);
     }
 }
