@@ -3,7 +3,6 @@ import java.util.*;
 public class HumanResources {
     private static List<Staff> staffs;
     private static List<Department> departments;
-    static Scanner inpN = new Scanner(System.in);
     static Scanner inpS = new Scanner(System.in);
     // select feature or quit
     static int type;
@@ -14,10 +13,10 @@ public class HumanResources {
         String back = "y";
         do {
             menu();
-            type = inpN.nextInt();
+            type = inputNumber();
             while (type < 1 || type > 8) {
                 System.out.print("Vui lòng nhập lại: ");
-                type = inpN.nextInt();
+                type = inputNumber();
             }
             switch (type) {
                 case 1:
@@ -114,6 +113,20 @@ public class HumanResources {
     }
 
     /**
+     * check if input is number or not
+     *
+     * @return number value
+     */
+    private static int inputNumber() {
+        Scanner inpN = new Scanner(System.in);
+        while (!inpN.hasNextInt()) {
+            System.out.print("Vui lòng nhập giá trị là số: ");
+            inpN.nextLine();
+        }
+        return inpN.nextInt();
+    }
+
+    /**
      * feature 1: display all staff members
      */
     private static void displayStaff() {
@@ -164,10 +177,10 @@ public class HumanResources {
             System.out.println("3. Bộ phận Business");
             System.out.print(">> Nhập số tương ứng với bộ phận: ");
             // select department
-            int select = inpN.nextInt();
+            int select = inputNumber();
             while (select < 1 || select > 3) {
                 System.out.print("Vui lòng nhập lại: ");
-                select = inpN.nextInt();
+                select = inputNumber();
             }
             switch (select) {
                 case 1:
@@ -221,10 +234,10 @@ public class HumanResources {
             System.out.println("1. Thêm nhân viên");
             System.out.println("2. Thêm quản lý");
             System.out.print(">> 1 or 2: ");
-            int inputSelect = inpN.nextInt();
+            int inputSelect = inputNumber();
             while (inputSelect != 1 && inputSelect != 2) {
                 System.out.print("Vui lòng nhập lại: ");
-                inputSelect = inpN.nextInt();
+                inputSelect = inputNumber();
             }
             System.out.print("ID: ");
             String inputId = inpS.nextLine();
@@ -235,18 +248,18 @@ public class HumanResources {
             System.out.print("Tên: ");
             String inputName = inpS.nextLine();
             System.out.print("Tuổi: ");
-            int inputAge = inpN.nextInt();
+            int inputAge = inputNumber();
             System.out.print("Hệ số lương: ");
-            int inputCoeSalary = inpN.nextInt();
+            int inputCoeSalary = inputNumber();
             System.out.print("Ngày vào làm việc: ");
             String inputDateIn = inpS.nextLine();
             System.out.println("Bộ phận:");
             System.out.println("1. HR\n2. IT\n3. Business");
             System.out.print(">> Nhập số tương ứng: ");
-            int inputDepartNum = inpN.nextInt();
+            int inputDepartNum = inputNumber();
             while (inputDepartNum < 1 || inputDepartNum > 3) {
                 System.out.print("Vui lòng nhập lại: ");
-                inputDepartNum = inpN.nextInt();
+                inputDepartNum = inputNumber();
             }
             String inputDepart;
             if (inputDepartNum == 1) {
@@ -258,10 +271,10 @@ public class HumanResources {
             }
             updateNumberOfStaff(inputDepart);
             System.out.print("Số ngày nghỉ phép: ");
-            int inputPaidLeave = inpN.nextInt();
+            int inputPaidLeave = inputNumber();
             if (inputSelect == 1) {
                 System.out.print("Số giờ làm thêm: ");
-                int inputOverTime = inpN.nextInt();
+                int inputOverTime = inputNumber();
                 Staff newEmployee = new Employee(inputId, inputName, inputAge, inputCoeSalary, inputDateIn, inputDepart, inputPaidLeave, inputOverTime);
                 // add member to list
                 staffs.add(newEmployee);
@@ -270,9 +283,9 @@ public class HumanResources {
             } else {
                 System.out.println("Chức vụ:");
                 System.out.println("1. Business Leader\n2. Project Leader\n3. Technical Leader");
-                int inputPositionNum = inpN.nextInt();
+                int inputPositionNum = inputNumber();
                 while (inputPositionNum < 1 || inputPositionNum > 3) {
-                    inputPositionNum = inpN.nextInt();
+                    inputPositionNum = inputNumber();
                 }
                 String inputPosition = "";
                 switch (inputPositionNum) {
