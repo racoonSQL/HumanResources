@@ -358,6 +358,23 @@ public class HumanResources {
     }
 
     /**
+     * add search results to new list
+     *
+     * @param input search input
+     * @return matching list
+     */
+    private static List<Staff> listFound(String input) {
+        // new list after search
+        List<Staff> listFound = new ArrayList<>();
+        for (Staff staff : staffs) {
+            if (staff.getId().toLowerCase().contains(input.toLowerCase()) || staff.getName().toLowerCase().contains(input.toLowerCase())) {
+                listFound.add(staff);
+            }
+        }
+        return listFound;
+    }
+
+    /**
      * feature 5: find staff members
      *
      * @return user choice
@@ -368,18 +385,14 @@ public class HumanResources {
         do {
             System.out.print("Nhập vào ID hoặc tên để tìm kiếm: ");
             String inputIdOrName = inpS.nextLine();
-            // display message if not found
-            boolean isFound = false;
-            System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ", "Lương");
-            for (Staff staff : staffs) {
-                if (staff.getId().toLowerCase().contains(inputIdOrName.toLowerCase()) || staff.getName().toLowerCase().contains(inputIdOrName.toLowerCase())) {
+            if (listFound(inputIdOrName).size() != 0) {
+                System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ", "Lương");
+                for (Staff staff : listFound(inputIdOrName)) {
                     // get department name
                     String departmentName = getDepartmentName(staff.getDepart());
                     staff.displayInformation(departmentName, true);
-                    isFound = true;
                 }
-            }
-            if (!isFound) {
+            } else {
                 System.out.println("Không tìm thấy!");
             }
             System.out.print("Ấn \"b\" để tìm lại, ấn \"y\" để quay lại menu, ấn phím khác để đóng chương trình: ");
