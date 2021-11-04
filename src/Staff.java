@@ -86,6 +86,9 @@ public abstract class Staff {
 
     public abstract void displayInformation(String departName, boolean isisDisplaySalary);
 
+    /**
+     * display salary
+     */
     public void displaySalary() {
         // format before display
         DecimalFormat format = new DecimalFormat("#,###");

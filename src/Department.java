@@ -33,6 +33,11 @@ public class Department {
         this.employeeNumber = employeeNumber;
     }
 
+    /**
+     * display information of department
+     *
+     * @return info string
+     */
     @Override
     public String toString() {
         return String.format("%-15s%-15s%d", departmentId, departmentName, employeeNumber);

@@ -8,10 +8,12 @@ public class HumanResources {
     static int type;
 
     public static void main(String[] args) {
+        // initial data base
         init();
         // back to menu if user choose "y"
         String back = "y";
         do {
+            // display menu
             menu();
             type = inputNumber();
             while (type < 1 || type > 8) {
@@ -20,32 +22,39 @@ public class HumanResources {
             }
             switch (type) {
                 case 1:
+                    // feature 1: display all staff member
                     displayStaff();
-                    backMenu();
                     break;
                 case 2:
+                    // feature 2: display department's basic info
                     displayDepartment();
-                    backMenu();
                     break;
                 case 3:
+                    // feature 3: display members by department
                     back = displayDepartmentStaff();
                     break;
                 case 4:
+                    // feature 4: allow adds staff members
                     back = addStaff();
                     break;
                 case 5:
+                    // feature 5: find staff members
                     back = findStaff();
                     break;
                 case 6:
+                    // feature 6: display salary descending
                     displaySalaryDescending();
-                    backMenu();
                     break;
                 case 7:
+                    // feature 7: display salary ascending
                     displaySalaryAscending();
-                    backMenu();
                     break;
                 default:
                     break;
+            }
+            if (type == 1 || type == 2 || type == 6 || type == 7) {
+                // select to back to menu
+                backMenu();
             }
             if (!back.equalsIgnoreCase("y")) {
                 type = 8;
@@ -119,6 +128,7 @@ public class HumanResources {
      */
     private static int inputNumber() {
         Scanner inpN = new Scanner(System.in);
+        // check if input value is integer or not
         while (!inpN.hasNextInt()) {
             System.out.print("Vui lòng nhập giá trị là số: ");
             inpN.nextLine();
@@ -234,6 +244,7 @@ public class HumanResources {
             System.out.println("1. Thêm nhân viên");
             System.out.println("2. Thêm quản lý");
             System.out.print(">> 1 or 2: ");
+            // choose employee or manager
             int inputSelect = inputNumber();
             while (inputSelect != 1 && inputSelect != 2) {
                 System.out.print("Vui lòng nhập lại: ");
@@ -269,6 +280,7 @@ public class HumanResources {
             } else {
                 inputDepart = "bs";
             }
+            // update the number of members in the department
             updateNumberOfStaff(inputDepart);
             System.out.print("Số ngày nghỉ phép: ");
             int inputPaidLeave = inputNumber();
@@ -285,6 +297,7 @@ public class HumanResources {
                 System.out.println("1. Business Leader\n2. Project Leader\n3. Technical Leader");
                 int inputPositionNum = inputNumber();
                 while (inputPositionNum < 1 || inputPositionNum > 3) {
+                    System.out.print("Vui lòng nhập lại: ");
                     inputPositionNum = inputNumber();
                 }
                 String inputPosition = "";
@@ -336,7 +349,7 @@ public class HumanResources {
      */
     private static void updateNumberOfStaff(String deptId) {
         for (Department dept : departments) {
-            // if match ID in list, increase number
+            // if match ID of department in list, increase number
             if (dept.getDepartmentId().equals(deptId)) {
                 dept.setEmployeeNumber(dept.getEmployeeNumber() + 1);
             }
@@ -364,7 +377,7 @@ public class HumanResources {
      * @return matching list
      */
     private static List<Staff> listFound(String input) {
-        // new list after search
+        // create new list after search
         List<Staff> listFound = new ArrayList<>();
         for (Staff staff : staffs) {
             if (staff.getId().toLowerCase().contains(input.toLowerCase()) || staff.getName().toLowerCase().contains(input.toLowerCase())) {
@@ -385,9 +398,10 @@ public class HumanResources {
         do {
             System.out.print("Nhập vào ID hoặc tên để tìm kiếm: ");
             String inputIdOrName = inpS.nextLine();
-            if (listFound(inputIdOrName).size() != 0) {
+            List<Staff> foundStaffs = listFound(inputIdOrName);
+            if (foundStaffs.size() != 0) {
                 System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ", "Lương");
-                for (Staff staff : listFound(inputIdOrName)) {
+                for (Staff staff : foundStaffs) {
                     // get department name
                     String departmentName = getDepartmentName(staff.getDepart());
                     staff.displayInformation(departmentName, true);
