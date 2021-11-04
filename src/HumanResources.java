@@ -252,6 +252,7 @@ public class HumanResources {
             }
             System.out.print("ID: ");
             String inputId = inpS.nextLine();
+            // check if ID already exists
             while (isInvalidId(inputId)) {
                 System.out.print("Vui lòng nhập lại: ");
                 inputId = inpS.nextLine();
@@ -398,6 +399,7 @@ public class HumanResources {
         do {
             System.out.print("Nhập vào ID hoặc tên để tìm kiếm: ");
             String inputIdOrName = inpS.nextLine();
+            // search and add found members to list
             List<Staff> foundStaffs = listFound(inputIdOrName);
             if (foundStaffs.size() != 0) {
                 System.out.printf("%-8s%-20s%-8s%-14s%-15s%-12s%-20s%-18s%-20s%s%n", "ID", "Tên", "Tuổi", "Hệ số lương", "Ngày vào làm", "Bộ phận", "Số ngày nghỉ phép", "Số giờ làm thêm", "Chức vụ", "Lương");
